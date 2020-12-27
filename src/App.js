@@ -12,6 +12,7 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState('coffee');
+  const [searchPlaceholder, setSearchPlaceholder] = useState("Type in your recipes!");
 
   // Use effect
   useEffect(() => {
@@ -25,17 +26,32 @@ function App() {
 
     setRecipes(data.hits);
     console.log(data.hits);
+
+    // Check search input
+    if (data.hits.length == 0) {
+      setSearchPlaceholder("No result!");
+      setSearch("");
+    }
+
+    else {
+      setSearchPlaceholder("Type in your recipes!");
+    }
   }
 
   return (
     <div className="App">
+      <h1 className="text-center mt-3">Find your favorite recipes here</h1>
+
       <Form 
         search={search} 
         setSearch={setSearch}
 
         setQuery={setQuery}
+
+        searchPlaceholder={searchPlaceholder}
       />
-      <div className="container pt-5">
+
+      <div className="container pt-3">
         <div className="row">
             {recipes.map((recipe, index) => {
               return(

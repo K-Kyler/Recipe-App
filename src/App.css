@@ -4,3 +4,8 @@ body {
   background-repeat: no-repeat;
   min-height: 100vh;
 }
+
+.search-form input::placeholder {
+  color: #bebebe;
+  font-style: italic;
+}
