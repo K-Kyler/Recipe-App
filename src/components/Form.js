@@ -1,12 +1,13 @@
 import React from 'react';
 
-const Form = ({ search, setSearch, setQuery, searchPlaceholder }) => {
+const Form = ({ search, setSearch, setQuery, searchPlaceholder, setLoading }) => {
     const updateSearch = event => {
         setSearch(event.target.value);
     }
 
     const getSearch = event => {
         event.preventDefault();
+        setLoading(false);
         setQuery(search);
     }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Form from './components/Form';
 import Recipe from './components/Recipe';
+import * as ReactBootstrap from 'react-bootstrap';
 
 function App() {
   // Get app id & key from EDAMAM API
@@ -13,6 +14,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState('coffee');
   const [searchPlaceholder, setSearchPlaceholder] = useState("Type in your recipes!");
+  const [loading, setLoading] = useState(false);
 
   // Use effect
   useEffect(() => {
@@ -27,14 +29,16 @@ function App() {
     setRecipes(data.hits);
     console.log(data.hits);
 
-    // Check search input
+    // Check search input and reloading spinner
     if (data.hits.length == 0) {
       setSearchPlaceholder("No result!");
       setSearch("");
+      setLoading(false);
     }
 
     else {
       setSearchPlaceholder("Type in your recipes!");
+      setLoading(true);
     }
   }
 
@@ -49,23 +53,31 @@ function App() {
         setQuery={setQuery}
 
         searchPlaceholder={searchPlaceholder}
+
+        setLoading={setLoading}
       />
 
-      <div className="container pt-3">
-        <div className="row">
-            {recipes.map((recipe, index) => {
-              return(
-                <Recipe 
-                  key={index} 
-                  title={recipe.recipe.label}
-                  calories={recipe.recipe.calories}
-                  image={recipe.recipe.image}
-                  ingredients={recipe.recipe.ingredients}
-                />
-              );
-            })}
+      {loading ? 
+        <div className="container pt-3">
+          <div className="row">
+              {recipes.map((recipe, index) => {
+                return(
+                  <Recipe 
+                    key={index} 
+                    title={recipe.recipe.label}
+                    calories={recipe.recipe.calories}
+                    image={recipe.recipe.image}
+                    ingredients={recipe.recipe.ingredients}
+                  />
+                );
+              })}
+          </div>
+        </div>         
+        : 
+        <div className="text-center mt-5 pt-5">
+          <ReactBootstrap.Spinner animation="border" variant="success" />
         </div>
-      </div>
+      }
     </div>
   );
 }
